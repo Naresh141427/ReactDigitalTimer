@@ -8,7 +8,6 @@ class DigitalTimer extends Component {
       timeInMinutes: (25 * 60) / 60,
       timeInSeconds: (25 * 60) % 60,
       isStarted: false,
-      isEnabled: false,
     }
   }
 
@@ -28,7 +27,6 @@ class DigitalTimer extends Component {
             clearInterval(this.myInterval)
             this.setState(prevState => ({
               isStarted: !prevState.isStarted,
-              isEnabled: !prevState.isEnabled,
             }))
           } else {
             this.setState(prevState => ({
@@ -46,17 +44,22 @@ class DigitalTimer extends Component {
   }
 
   onIncrementingTimerValue = () => {
-    this.setState(prevState => ({timeInMinutes: prevState.timeInMinutes + 1}))
+    const {isStarted} = this.state
+    if (!isStarted) {
+      this.setState(prevState => ({timeInMinutes: prevState.timeInMinutes + 1}))
+    }
   }
 
   onDecrementingTimerValue = () => {
-    this.setState(prevState => ({timeInMinutes: prevState.timeInMinutes - 1}))
+    const {isStarted} = this.state
+    if (!isStarted) {
+      this.setState(prevState => ({timeInMinutes: prevState.timeInMinutes - 1}))
+    }
   }
 
   onStartOrPause = () => {
     this.setState(prevState => ({
       isStarted: !prevState.isStarted,
-      isEnabled: !prevState.isEnabled,
     }))
   }
 
@@ -65,7 +68,7 @@ class DigitalTimer extends Component {
   }
 
   render() {
-    const {timeInMinutes, timeInSeconds, isStarted, isEnabled} = this.state
+    const {timeInMinutes, timeInSeconds, isStarted} = this.state
 
     const minutes = timeInMinutes > 9 ? timeInMinutes : `0${timeInMinutes}`
 
@@ -81,8 +84,6 @@ class DigitalTimer extends Component {
 
     const timerStatus = isStarted ? 'Running' : 'Paused'
 
-    console.log(startAndPauseIcons)
-
     return (
       <div className="app-container">
         <h1 className="app-title">Digital Timer</h1>
@@ -97,22 +98,27 @@ class DigitalTimer extends Component {
           </div>
           <div className="timer-controls-container">
             <div className="start-reset-container">
-              <button type="button" className="button">
+              <button
+                type="button"
+                className="button"
+                onClick={this.onStartOrPause}
+              >
                 <img
                   src={startAndPauseButtonsIcons}
                   className="icon text"
                   alt={startAndPauseIcons}
-                  onClick={this.onStartOrPause}
                 />
                 {startOrPauseText}
               </button>
-              <button type="button" className="reset-button">
+              <button
+                type="button"
+                className="reset-button"
+                onClick={this.onResettingTimerValue}
+              >
                 <img
                   src="https://assets.ccbp.in/frontend/react-js/reset-icon-img.png "
                   className="icon"
                   alt="reset icon"
-                  onClick={this.onResettingTimerValue}
-                  disabled={isEnabled}
                 />
               </button>
               <p className="text">Reset</p>
@@ -123,7 +129,6 @@ class DigitalTimer extends Component {
                 type="button"
                 className="buttons"
                 onClick={this.onDecrementingTimerValue}
-                disabled={isEnabled}
               >
                 -
               </button>
@@ -132,7 +137,6 @@ class DigitalTimer extends Component {
                 type="button"
                 className="buttons"
                 onClick={this.onIncrementingTimerValue}
-                disabled={isEnabled}
               >
                 +
               </button>
