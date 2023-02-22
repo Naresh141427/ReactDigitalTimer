@@ -5,6 +5,7 @@ class DigitalTimer extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      deafultTimeValue: 25,
       timeInMinutes: (25 * 60) / 60,
       timeInSeconds: (25 * 60) % 60,
       isStarted: false,
@@ -46,14 +47,20 @@ class DigitalTimer extends Component {
   onIncrementingTimerValue = () => {
     const {isStarted} = this.state
     if (!isStarted) {
-      this.setState(prevState => ({timeInMinutes: prevState.timeInMinutes + 1}))
+      this.setState(prevState => ({
+        deafultTimeValue: prevState.deafultTimeValue + 1,
+        timeInMinutes: prevState.timeInMinutes + 1,
+      }))
     }
   }
 
   onDecrementingTimerValue = () => {
     const {isStarted} = this.state
     if (!isStarted) {
-      this.setState(prevState => ({timeInMinutes: prevState.timeInMinutes - 1}))
+      this.setState(prevState => ({
+        deafultTimeValue: prevState.deafultTimeValue - 1,
+        timeInMinutes: prevState.timeInMinutes - 1,
+      }))
     }
   }
 
@@ -64,11 +71,21 @@ class DigitalTimer extends Component {
   }
 
   onResettingTimerValue = () => {
-    this.setState({timeInMinutes: 25, timeInSeconds: 0, isStarted: false})
+    this.setState({
+      deafultTimeValue: 25,
+      timeInMinutes: 25,
+      timeInSeconds: 0,
+      isStarted: false,
+    })
   }
 
   render() {
-    const {timeInMinutes, timeInSeconds, isStarted} = this.state
+    const {
+      deafultTimeValue,
+      timeInMinutes,
+      timeInSeconds,
+      isStarted,
+    } = this.state
 
     const minutes = timeInMinutes > 9 ? timeInMinutes : `0${timeInMinutes}`
 
@@ -132,7 +149,7 @@ class DigitalTimer extends Component {
               >
                 -
               </button>
-              <p className="timer-count-button">{timeInMinutes}</p>
+              <p className="timer-count-button">{deafultTimeValue}</p>
               <button
                 type="button"
                 className="buttons"
