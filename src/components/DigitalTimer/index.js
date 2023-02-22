@@ -26,6 +26,10 @@ class DigitalTimer extends Component {
         if (timeInSeconds === 0) {
           if (timeInMinutes === 0) {
             clearInterval(this.myInterval)
+            this.setState(prevState => ({
+              isStarted: !prevState.isStarted,
+              isEnabled: !prevState.isEnabled,
+            }))
           } else {
             this.setState(prevState => ({
               timeInMinutes: prevState.timeInMinutes - 1,
